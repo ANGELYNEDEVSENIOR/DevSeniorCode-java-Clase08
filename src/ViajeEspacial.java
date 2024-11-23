@@ -2,126 +2,130 @@
 import java.util.Scanner;
 
 //  [] {} \
-public class ViajeEspacial {
-        // escribimos las acciones y las modulamos para estructurar mejor
-public static void ShowMenu() {
-        System.out.println("\n---WELCOME TO OUR INTERPLANETARY JOURNEY---- ");
-        System.out.println("\n --- Main Menu----");
-        System.out.println("1. select the planet you want to visit");
-        System.out.println("2. Select a spaceship");
-        System.out.println("3. start our interplanetary journey");
-        System.out.println("4. I'M NOT READY! I WANT TO GO OUT");
-        System.out.println("please choose an option: ");
-        }
+public class ViajeEspacial { // escribimos las acciones y las modulamos para estructurar mejor
+
         
 // declaro un arreglo de los planetas que hay - definimos los planetas
-static String[] planet = { "Mars", "Mercury", "Saturn", "Jupiter", "Neptune", "Venus", "Uranus" };
+static String[] planetas = { "Mars", "Mercury", "Saturn", "Jupiter", "Neptune", "Venus", "Uranus" };
 // vamos a declarar un conjunto de naves dispuestas para el viaje
- static String[] spaceships = { "Atlantis", "Discovery", "Death-Star", "Galactica" };
+ static String[] naves = { "Atlantis", "Discovery", "Death-Star", "Galactica" };
 // hacemos las distancias con double
-static Double[] distance = { 54.6, 91.7, 1345.0, 965.0, 4351.0, 61.0, 2723.0 };
+static Double[] distancias = { 54.6, 91.7, 1345.0, 965.0, 4351.0, 61.0, 2723.0 };
 // aplicamos velocidades a cada una de las naves
-static Double[] speed = { 1000.0, 2100.0, 2700.0, 3400.0 };
+static Double[] velocidades = { 20000.0, 30000.0, 50000.0, 75000.0 };// Velocidad en km/h
 
- static Scanner scanner = new Scanner(System.in);
-public static void main(String[] args) throws Exception {
-int option;
-do {
-ShowMenu();
-option = scanner.nextInt();
-switch (option) {
-        case 1:
-                printPlanetString();
-        break;
-        case 2:
-                selectionSpaceships();
-        break;
-                
-        default:
-        break;
-}
-} while (option != 4);
- System.out.println("Have a good trip, maybe another time.");
-}
+public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        boolean salir = false;
+        int planetaSeleccionado = -1;
+        int naveSeleccionada = -1;
+        int pasajeros = 0;
 
-private static void selectionSpaceships() {
-        System.out.println("Please select the spaceship you like the most: ");
-        System.out.println("1. ATLANTIS");
-        System.out.println("2. DISCOVERY");
-        System.out.println("3. DEATH STAR");
-        System.out.println("4. GALACTICA");
-        int option = scanner.nextInt();
-        switch (option) {
-        case 1:
-        System.out.println("Fabulous you chose the incredible Atlantis"); 
-        break;
-        case 2: 
-        System.out.println("Fabulous you chose the incredible Discovery"); 
-        break;
-        case 3:
-        System.out.println("Fabulous you chose the incredible Death star");   
-        break;
-        case 4:
-        System.out.println("Fabulous you chose the incredible Galactica");
-        break;
-        default:
-        System.out.println("No more spaceships, sorry.");   
-        break;
-        }
-}
+        while (!salir) {
+            System.out.println("\n=== Menú de Viaje Interplanetario ===");
+            System.out.println("1. Seleccionar un planeta de destino");
+            System.out.println("2. Seleccionar una nave espacial");
+            System.out.println("3. Iniciar la simulación del viaje");
+            System.out.println("4. Salir del programa");
+            System.out.print("Elige una opción: ");
+            int opcion = sc.nextInt();
 
-                
-private static void printPlanetString() {
-        System.out.println("Select the planet you want: ");
-        System.out.println("1. The red planet: Mars");
-        System.out.println("2. The Goddess Planet: Venus");
-        System.out.println("3. The planet with a ring: Saturn");
-        System.out.println("4. The largest planet: Jupiter");
-        System.out.println("5. The most distant planet: Neptune");
-        System.out.println("6. The most periodic planet: Mercury");
-        System.out.println("7. The most forgotten planet: Uranus");
-        System.out.println("8. I'm terrified of traveling so I'll stay on earth!!!");
-        int option = scanner.nextInt();
-        switch (option) {
-case 1:
-System.out.println("Perfect, you have selected the planet Mars.");
-break;
- case 2:
-System.out.println("Perfect, you have selected the planet Venus.");
- break;
-case 3:
-System.out.println("Perfect, you have selected the planet Saturn.");
-break;
-case 4:
-System.out.println("Perfect, you have selected the planet Jupiter.");
-break;
-case 5:
-System.out.println("Perfect, you have selected the planet Neptune.");
-break;
-case 6:
-System.out.println("Perfect, you have selected the planet Mercury.");
-break;
-case 7:
-System.out.println("Perfect, you have selected the planet Uranus");
-break;
-default:
- System.out.println("Wrong option, there are no planets anymore, remember?");
-break;
+            switch (opcion) {
+                case 1:
+                    planetaSeleccionado = seleccionarPlaneta(sc);
+                    break;
+                case 2:
+                    if (planetaSeleccionado != -1) {
+                        naveSeleccionada = seleccionarNave(sc);
+                        pasajeros = ingresarPasajeros(sc);
+                    } else {
+                        System.out.println("Primero debes seleccionar un planeta.");
+                    }
+                    break;
+                case 3:
+                    if (planetaSeleccionado != -1 && naveSeleccionada != -1) {
+                        iniciarSimulacion(planetaSeleccionado, naveSeleccionada, pasajeros);
+                    } else {
+                        System.out.println("Debes seleccionar un planeta y una nave antes de iniciar el viaje.");
+                    }
+                    break;
+                case 4:
+                    salir = true;
+                    System.out.println("¡Gracias por usar el sistema de Viaje Interplanetario!");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Intenta nuevamente.");
             }
-}
-                
+        }
+        sc.close();
+    }
 
-public static void selectionDestination() {
-}
+    // Métodos
+    public static int seleccionarPlaneta(Scanner sc) {
+        System.out.println("\n=== Selección de Planeta ===");
+        for (int i = 0; i < planetas.length; i++) {
+            System.out.printf("%d. %s (%.1f millones de km)\n", i + 1, planetas[i], distancias[i]);
+        }
+        System.out.print("Elige un planeta: ");
+        int opcion = sc.nextInt();
+        if (opcion >= 1 && opcion <= planetas.length) {
+            System.out.printf("Has seleccionado: %s\n", planetas[opcion - 1]);
+            return opcion - 1;
+        } else {
+            System.out.println("Opción no válida. Intenta nuevamente.");
+            return -1;
+        }
+    }
 
-public static void calculateResources() {
-}
+    public static int seleccionarNave(Scanner sc) {
+        System.out.println("\n=== Selección de Nave ===");
+        for (int i = 0; i < naves.length; i++) {
+            System.out.printf("%d. %s (Velocidad: %.1f km/h)\n", i + 1, naves[i], velocidades[i]);
+        }
+        System.out.print("Elige una nave: ");
+        int opcion = sc.nextInt();
+        if (opcion >= 1 && opcion <= naves.length) {
+            System.out.printf("Has seleccionado: %s\n", naves[opcion - 1]);
+            return opcion - 1;
+        } else {
+            System.out.println("Opción no válida. Intenta nuevamente.");
+            return -1;
+        }
+    }
 
-public static void calculateFuel() {
-}
+    public static int ingresarPasajeros(Scanner sc) {
+        System.out.print("\nIngresa la cantidad de pasajeros: ");
+        int pasajeros = sc.nextInt();
+        if (pasajeros > 0) {
+            System.out.printf("Cantidad de pasajeros: %d\n", pasajeros);
+            return pasajeros;
+        } else {
+            System.out.println("La cantidad de pasajeros debe ser positiva.");
+            return ingresarPasajeros(sc);
+        }
+    }
 
-// este es un metodo auxiliar, los cuales se repiten
-public static void printPlanetString(String[] planets) {
-}
+    public static void iniciarSimulacion(int planetaSeleccionado, int naveSeleccionada, int pasajeros) {
+        System.out.println("\n=== Iniciando Simulación ===");
+        double distancia = distancias[planetaSeleccionado] * 1_000_000; // Convertir a kilómetros
+        double velocidad = velocidades[naveSeleccionada];
+        double duracion = distancia / velocidad; // Duración en horas
+        double duracionDias = duracion / 24; // Convertir a días
 
+        System.out.printf("Destino: %s\n", planetas[planetaSeleccionado]);
+        System.out.printf("Nave: %s\n", naves[naveSeleccionada]);
+        System.out.printf("Distancia: %.1f km\n", distancia);
+        System.out.printf("Duración estimada del viaje: %.1f días\n", duracionDias);
+        System.out.println("Simulación en progreso:");
+
+        for (int i = 0; i <= 100; i += 20) {
+            System.out.printf("Progreso: %d%%\n", i);
+            try {
+                Thread.sleep(1000); // Pausa de 1 segundo para simular progreso
+            } catch (InterruptedException e) {
+                System.out.println("Error en la simulación.");
+            }
+        }
+        System.out.println("¡Has llegado a tu destino!");
+    }
 }
